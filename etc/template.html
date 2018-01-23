@@ -1,0 +1,48 @@
+<!doctype html>
+<meta charset=utf-8>
+<title>Invoice</title>
+<link rel=stylesheet href=../invoice.css>
+<h1>Invoice</h1>
+<table id=contacts>
+<tr>
+  <td><output data-field=business-name></output>
+  <td><output data-field=client-name></output>
+<tr>
+  <td>
+    <output data-field=business-street></output><br>
+    <output data-field=business-city></output><br>
+    <output data-field=business-country></output>
+  <td>
+    <output data-field=client-street></output><br>
+    <output data-field=client-city></output><br>
+    <output data-field=client-country></output>
+<tr>
+  <td><output data-field=business-vat></output>
+  <td><output data-field=client-vat></output>
+</table>
+
+<ul class=metadata>
+  <li>Invoice number: <output data-field=invoice-index></output>
+  <li>Date: <output data-field=invoice-date></output>
+  <li>Due date: +30 days
+</ul>
+
+<table id=services>
+<thead>
+<tr>
+  <th>Description of Services
+  <th class=num>Amount
+<tbody class=items>
+<tfoot>
+<tr>
+  <td>Total
+  <td class=num><output data-field=total></output>
+</table>
+
+<p><output data-field=client-vat-policy></output>
+<p>Payable to:
+<ul>
+  <li>Bank: <output data-field=business-bank></output>
+  <li>IBAN: <output data-field=business-iban></output>
+  <li>SWIFT/BIC code: <output data-field=business-bic></output>
+</ul>

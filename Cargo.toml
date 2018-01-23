@@ -1,0 +1,18 @@
+[package]
+name = "invoices"
+version = "0.1.0"
+authors = ["Ms2ger <Ms2ger@gmail.com>"]
+
+[[bin]]
+name = "generate-invoice"
+path = "src/main.rs"
+
+[dependencies]
+csv = "1.0.0-beta.3"
+html5ever = "0.22.0"
+kuchiki = "0.7.0"
+log = "0.4.1"
+maplit = "1"
+markup5ever = "0.7.2"
+serde = "1"
+serde_derive = "1"
