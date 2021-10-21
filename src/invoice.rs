@@ -1,3 +1,4 @@
+use chrono::TimeZone;
 use std::fmt;
 use std::iter::Sum;
 
@@ -26,55 +27,19 @@ impl fmt::Display for InvoiceIndex {
     }
 }
 
-#[derive(Copy, Clone, Debug)]
-pub struct Year(pub u16);
 
 #[derive(Copy, Clone, Debug)]
-pub struct Month(pub u8);
-
-impl Month {
-    pub fn name(&self) -> &'static str {
-        static MONTHS: [&'static str; 12] = [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-        ];
-        MONTHS[self.0 as usize - 1]
-    }
-}
-
-#[derive(Copy, Clone, Debug)]
-pub struct Day(pub u8);
-
-#[derive(Copy, Clone, Debug)]
-pub struct Date {
-    pub year: Year,
-    pub month: Month,
-    pub day: Day,
-}
+pub struct Date(chrono::Date<chrono::Utc>);
 
 impl Date {
     pub fn new(year: u16, month: u8, day: u8) -> Self {
-        Self {
-            year: Year(year),
-            month: Month(month),
-            day: Day(day),
-        }
+        Self(chrono::Utc.ymd(year.into(), month.into(), day.into()))
     }
 }
 
 impl fmt::Display for Date {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:04}-{:02}-{:02}", self.year.0, self.month.0, self.day.0)
+        write!(f, "{}", self.0.format("%Y-%m-%d"))
     }
 }
 

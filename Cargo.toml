@@ -8,6 +8,7 @@ name = "generate-invoice"
 path = "src/main.rs"
 
 [dependencies]
+chrono = "0.4.19"
 csv = "1.1.6"
 html5ever = "0.25.1"
 kuchiki = "0.8.1"

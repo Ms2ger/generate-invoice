@@ -1,5 +1,6 @@
 extern crate csv as csv_parser;
 
+extern crate chrono;
 extern crate kuchiki;
 #[macro_use]
 extern crate log;
