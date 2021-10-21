@@ -92,6 +92,12 @@ impl fmt::Display for Money {
     }
 }
 
+impl Invoice {
+    pub fn total(&self) -> Money {
+        self.items.iter().map(|item| item.amount).sum()
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct LineItem {
     pub description: String,

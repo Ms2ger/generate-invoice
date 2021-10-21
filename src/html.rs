@@ -1,4 +1,4 @@
-use invoice::{Invoice, LineItem, Money};
+use invoice::{Invoice, LineItem};
 
 use kuchiki::{self, Attribute, ExpandedName, NodeRef};
 use kuchiki::traits::TendrilSink;
@@ -78,7 +78,7 @@ impl Invoice {
     pub fn generate_invoice(&self) -> Result<NodeRef, Box<dyn Error>> {
         trace!("Invoice::generate");
 
-        let total = self.items.iter().map(|item| item.amount).sum::<Money>().to_string();
+        let total = self.total().to_string();
         let invoice_date = self.metadata.date.to_string();
         let invoice_index = self.index.to_string();
 
