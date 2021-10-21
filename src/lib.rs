@@ -14,7 +14,9 @@ extern crate serde_derive;
 use invoice::Invoice;
 use std::error::Error;
 use std::fmt;
-use std::path::Path;
+use std::fs::File;
+use std::io::Write;
+use std::path::{Path, PathBuf};
 use std::process::{Command, ExitStatus};
 
 pub use csv::read_invoice;
@@ -23,6 +25,7 @@ pub mod args;
 mod csv;
 mod html;
 pub mod invoice;
+mod json;
 
 #[derive(Debug)]
 struct PdfCreationError(ExitStatus);
@@ -39,10 +42,12 @@ impl Error for PdfCreationError {
     }
 }
 
-fn generate_pdf(path: &Path) -> Result<(), Box<dyn Error>> {
+fn generate_pdf(path: &Path) -> Result<PathBuf, Box<dyn Error>> {
     trace!("generate_pdf");
 
-    let mut child = Command::new("prince").arg(path).spawn()?;
+    let output = path.with_extension("pdf");
+
+    let mut child = Command::new("prince").arg(path).arg("-o").arg(&output).spawn()?;
 
     let ecode = child.wait()?;
 
@@ -50,7 +55,7 @@ fn generate_pdf(path: &Path) -> Result<(), Box<dyn Error>> {
         return Err(Box::new(PdfCreationError(ecode)));
     }
 
-    Ok(())
+    Ok(output)
 }
 
 pub fn generate_invoice(path: &Path, invoice: &Invoice) -> Result<(), Box<dyn Error>> {
@@ -58,10 +63,15 @@ pub fn generate_invoice(path: &Path, invoice: &Invoice) -> Result<(), Box<dyn Er
 
     let result = invoice.generate_invoice()?;
 
-    let invoice = path.join(invoice.index.filename());
-    result.serialize_to_file(&invoice)?;
+    let path = path.join(invoice.index.filename());
+    result.serialize_to_file(&path)?;
 
-    generate_pdf(&invoice)?;
+    let pdf = generate_pdf(&path)?;
+
+    let json = json::generate_json(&invoice, &pdf)?;
+    let jsonpath = path.with_extension("json");
+    let mut jsonfile = File::create(jsonpath)?;
+    jsonfile.write_all(json.as_ref())?;
 
     Ok(())
 }

@@ -171,6 +171,7 @@ impl Clients {
             country: String,
             vat: String,
             vatpolicy: String,
+            partyid: u32,
         }
 
         impl Into<(String, Client)> for SerializedClient {
@@ -183,6 +184,7 @@ impl Clients {
                     country,
                     vat,
                     vatpolicy,
+                    partyid,
                 } = self;
                 let client = Client {
                     name,
@@ -191,6 +193,7 @@ impl Clients {
                     country,
                     vat,
                     vatpolicy,
+                    partyid,
                 };
                 (id, client)
             }

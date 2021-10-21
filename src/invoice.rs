@@ -35,6 +35,10 @@ impl Date {
     pub fn new(year: u16, month: u8, day: u8) -> Self {
         Self(chrono::Utc.ymd(year.into(), month.into(), day.into()))
     }
+
+    pub fn add_days(&self, days: i64) -> Self {
+        Self(self.0 + chrono::Duration::days(days))
+    }
 }
 
 impl fmt::Display for Date {
@@ -63,6 +67,7 @@ pub struct Client {
     pub country: String,
     pub vat: String,
     pub vatpolicy: String,
+    pub partyid: u32,
 }
 
 #[derive(Clone, Debug)]
@@ -89,6 +94,12 @@ impl fmt::Display for Money {
             ""
         };
         write!(f, "{}\u{20ac}{}.{:02}", sign, (self.0 / 100).abs(), self.0 % 100)
+    }
+}
+
+impl Money {
+    pub fn float(&self) -> f64 {
+        f64::from(self.0) / 100.0
     }
 }
 
