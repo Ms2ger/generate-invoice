@@ -30,7 +30,7 @@ fn insert_output(document: &NodeRef, data: &HashMap<&str, &str>) {
     }
 }
 
-fn insert_items(document: &NodeRef, items: &[LineItem]) -> Result<(), Box<Error>> {
+fn insert_items(document: &NodeRef, items: &[LineItem]) -> Result<(), Box<dyn Error>> {
     trace!("insert_items");
 
     let mut items_bodies = document.select(".items").expect("hard-coded selector");
@@ -65,7 +65,7 @@ fn substitute_template(
     mut template: &[u8],
     data: &HashMap<&str, &str>,
     items: &[LineItem],
-) -> Result<NodeRef, Box<Error>> {
+) -> Result<NodeRef, Box<dyn Error>> {
     trace!("substitute_template");
 
     let document = kuchiki::parse_html().from_utf8().read_from(&mut template)?;
@@ -75,7 +75,7 @@ fn substitute_template(
 }
 
 impl Invoice {
-    pub fn generate_invoice(&self) -> Result<NodeRef, Box<Error>> {
+    pub fn generate_invoice(&self) -> Result<NodeRef, Box<dyn Error>> {
         trace!("Invoice::generate");
 
         let total = self.items.iter().map(|item| item.amount).sum::<Money>().to_string();

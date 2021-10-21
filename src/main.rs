@@ -4,7 +4,7 @@ use std::env;
 use std::error::Error;
 use std::path::Path;
 
-pub fn generate_invoice() -> Result<(), Box<Error>> {
+pub fn generate_invoice() -> Result<(), Box<dyn Error>> {
     let path = Path::new(".");
     let index = invoices::args::parse(env::args().skip(1))?;
     let invoice = invoices::read_invoice(path, index)?;

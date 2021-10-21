@@ -38,7 +38,7 @@ struct Invoices {
 }
 
 impl Invoices {
-    fn read_costs<R: Read>(reader: R) -> Result<HashMap<u8, Vec<LineItem>>, Box<Error>> {
+    fn read_costs<R: Read>(reader: R) -> Result<HashMap<u8, Vec<LineItem>>, Box<dyn Error>> {
         #[derive(Debug, Deserialize)]
         struct SerializedLineItem {
             index: u8,
@@ -88,7 +88,7 @@ impl Invoices {
 
     fn read_invoice_data<R: Read>(
         reader: R,
-    ) -> Result<HashMap<u8, SerializedInvoiceData>, Box<Error>> {
+    ) -> Result<HashMap<u8, SerializedInvoiceData>, Box<dyn Error>> {
         #[derive(Debug, Deserialize)]
         struct FullSerializedInvoiceData {
             index: u8,
@@ -129,12 +129,12 @@ impl Invoices {
         let items = reader
             .deserialize::<FullSerializedInvoiceData>()
             .map(|data| Ok(data?.into()))
-            .collect::<Result<_, Box<Error>>>()?;
+            .collect::<Result<_, Box<dyn Error>>>()?;
 
         Ok(items)
     }
 
-    fn read(path: &Path, year: u16) -> Result<Self, Box<Error>> {
+    fn read(path: &Path, year: u16) -> Result<Self, Box<dyn Error>> {
         let folder = path.join(year.to_string());
 
         let filename = folder.join("data.csv");
@@ -161,7 +161,7 @@ struct Clients {
 }
 
 impl Clients {
-    fn from_reader<R: Read>(reader: R) -> Result<Self, Box<Error>> {
+    fn from_reader<R: Read>(reader: R) -> Result<Self, Box<dyn Error>> {
         #[derive(Debug, Deserialize)]
         struct SerializedClient {
             id: String,
@@ -218,7 +218,7 @@ struct Businesses {
 }
 
 impl Businesses {
-    fn from_reader<R: Read>(reader: R) -> Result<Self, Box<Error>> {
+    fn from_reader<R: Read>(reader: R) -> Result<Self, Box<dyn Error>> {
         #[derive(Debug, Deserialize)]
         struct SerializedBusiness {
             id: String,
@@ -276,7 +276,7 @@ impl Businesses {
     }
 }
 
-pub fn read_invoice(path: &Path, index: InvoiceIndex) -> Result<Invoice, Box<Error>> {
+pub fn read_invoice(path: &Path, index: InvoiceIndex) -> Result<Invoice, Box<dyn Error>> {
     let clients = Clients::from_reader(File::open(path.join("clients.csv"))?)?;
     let businesses = Businesses::from_reader(File::open(path.join("businesses.csv"))?)?;
 

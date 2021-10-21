@@ -38,7 +38,7 @@ impl Error for PdfCreationError {
     }
 }
 
-fn generate_pdf(path: &Path) -> Result<(), Box<Error>> {
+fn generate_pdf(path: &Path) -> Result<(), Box<dyn Error>> {
     trace!("generate_pdf");
 
     let mut child = Command::new("prince").arg(path).spawn()?;
@@ -52,7 +52,7 @@ fn generate_pdf(path: &Path) -> Result<(), Box<Error>> {
     Ok(())
 }
 
-pub fn generate_invoice(path: &Path, invoice: &Invoice) -> Result<(), Box<Error>> {
+pub fn generate_invoice(path: &Path, invoice: &Invoice) -> Result<(), Box<dyn Error>> {
     trace!("do_generate_invoice");
 
     let result = invoice.generate_invoice()?;

@@ -17,7 +17,7 @@ impl Error for WrongArguments {
     }
 }
 
-pub fn parse<I>(args: I) -> Result<InvoiceIndex, Box<Error>>
+pub fn parse<I>(args: I) -> Result<InvoiceIndex, Box<dyn Error>>
 where
     I: IntoIterator<Item = String>,
 {
