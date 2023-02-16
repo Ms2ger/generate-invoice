@@ -1,6 +1,6 @@
 [package]
 name = "invoices"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Ms2ger <Ms2ger@gmail.com>"]
 
 [[bin]]

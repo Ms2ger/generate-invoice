@@ -1,3 +1,4 @@
+use chrono::Datelike;
 use std::fmt;
 use std::iter::Sum;
 
@@ -37,6 +38,24 @@ impl Date {
 
     pub fn add_days(&self, days: i64) -> Self {
         Self(self.0 + chrono::Duration::days(days))
+    }
+
+    pub fn month_name(&self) -> &'static str {
+        static MONTHS: [&'static str; 12] = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ];
+        &MONTHS[self.0.month0() as usize]
     }
 }
 
