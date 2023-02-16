@@ -9,7 +9,7 @@ path = "src/main.rs"
 
 [dependencies]
 base64 = "0.13.0"
-chrono = "0.4.19"
+chrono = "0.4.23"
 csv = "1.1.6"
 html5ever = "0.25.1"
 kuchiki = "0.8.1"

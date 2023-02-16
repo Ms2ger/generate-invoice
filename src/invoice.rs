@@ -1,4 +1,3 @@
-use chrono::TimeZone;
 use std::fmt;
 use std::iter::Sum;
 
@@ -29,11 +28,11 @@ impl fmt::Display for InvoiceIndex {
 
 
 #[derive(Copy, Clone, Debug)]
-pub struct Date(chrono::Date<chrono::Utc>);
+pub struct Date(chrono::NaiveDate);
 
 impl Date {
-    pub fn new(year: u16, month: u8, day: u8) -> Self {
-        Self(chrono::Utc.ymd(year.into(), month.into(), day.into()))
+    pub fn new(year: u16, month: u8, day: u8) -> Option<Self> {
+        chrono::NaiveDate::from_ymd_opt(year.into(), month.into(), day.into()).map(Self)
     }
 
     pub fn add_days(&self, days: i64) -> Self {

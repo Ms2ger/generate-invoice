@@ -296,7 +296,7 @@ pub fn read_invoice(path: &Path, index: InvoiceIndex) -> Result<Invoice, Box<dyn
     let metadata = InvoiceData {
         business: businesses.get(business).ok_or(MissingData("Missing business"))?.clone(),
         client: clients.get(client).ok_or(MissingData("Missing client"))?.clone(),
-        date: Date::new(year, month, day),
+        date: Date::new(year, month, day).ok_or(MissingData("Invalid date"))?,
     };
 
     Ok(Invoice {
